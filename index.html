@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#c92f45">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="La Fraiserie Studio">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>La Fraiserie Studio — Prototype interactif</title>
+<style>
+:root{
+  --berry:#c92f45; --berry2:#e44d61; --ink:#202124; --muted:#72757a;
+  --cream:#faf7f2; --paper:#fff; --line:#e9e5df; --green:#2f8f5b;
+  --shadow:0 12px 35px rgba(32,33,36,.08); --radius:16px;
+}
+*{box-sizing:border-box} body{margin:0;background:#f4f1ec;color:var(--ink);font:14px/1.45 Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,textarea,select{font:inherit} button{cursor:pointer}
+.app{display:flex;min-height:100vh}
+.sidebar{width:235px;background:#191b1d;color:#fff;padding:22px 14px;display:flex;flex-direction:column}
+.brand{padding:8px 12px 22px;border-bottom:1px solid #343638;margin-bottom:14px}
+.brand b{font-size:19px;letter-spacing:.06em}.brand span{display:block;color:#f06a7b;font-family:cursive;font-size:18px;margin-top:1px}
+.nav button{display:flex;gap:10px;align-items:center;width:100%;border:0;background:transparent;color:#d9dcdf;text-align:left;padding:11px 12px;border-radius:10px;margin:3px 0}
+.nav button.active,.nav button:hover{background:#303235;color:#fff}.nav .ico{width:20px;text-align:center}
+.profile{margin-top:auto;background:#24272a;border-radius:12px;padding:13px;color:#cfd2d5;font-size:12px}
+.main{flex:1;min-width:0}.topbar{height:68px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:5}
+.topbar h1{font-size:17px;margin:0}.actions{display:flex;gap:8px}.btn{border:1px solid var(--line);background:#fff;padding:9px 14px;border-radius:9px}.btn.primary{background:var(--berry);border-color:var(--berry);color:#fff}.btn.ghost{background:#fff}.content{padding:28px;max-width:1500px;margin:auto}
+.view{display:none}.view.active{display:block}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 4px 18px rgba(0,0,0,.025);padding:18px}.metric .label{color:var(--muted);font-size:12px}.metric .value{font-size:28px;font-weight:750;margin:5px 0}.up{color:var(--green);font-size:12px}
+.section-title{display:flex;align-items:center;justify-content:space-between;margin:28px 0 12px}.section-title h2{font-size:18px;margin:0}
+.table{width:100%;border-collapse:collapse}.table th,.table td{padding:12px 8px;border-bottom:1px solid var(--line);text-align:left}.table th{font-size:11px;text-transform:uppercase;color:var(--muted)}.badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:11px;background:#f1f2f3}.badge.green{background:#e9f6ee;color:#227448}.badge.orange{background:#fff3db;color:#8b6218}.badge.blue{background:#e9f1ff;color:#3567a8}
+.thumb{width:52px;height:36px;border-radius:7px;object-fit:cover;background:#ddd}.rowflex{display:flex;gap:10px;align-items:center}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}.day{min-height:105px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px}.day small{color:var(--muted)}.event{font-size:11px;margin-top:9px;padding:6px;border-radius:7px;background:#fde7eb;border-left:3px solid var(--berry)}
+.editor{display:grid;grid-template-columns:210px minmax(400px,1fr) 290px;gap:14px;align-items:start}.panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}.panel h3{font-size:13px;margin:0 0 12px}.blocks{display:grid;gap:7px}.blockbtn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:9px;text-align:left}.blockbtn:hover{border-color:#d9a0a9;background:#fff8f9}
+.canvas{background:#ece9e4;padding:24px;min-height:720px;border-radius:14px}.email{max-width:570px;margin:auto;background:#fff;box-shadow:var(--shadow)}.email-head{padding:22px;text-align:center;border-bottom:1px solid #eee}.email-head b{letter-spacing:.16em}.email-hero{height:220px;background:linear-gradient(135deg,#bcae9a,#4b4036);display:flex;align-items:end;padding:22px;color:#fff;font-weight:700;font-size:25px}.email-body{padding:24px}.email-body h2{font-size:25px;line-height:1.15;margin:0 0 12px}.email-body p{color:#5c5d60}.cta{display:inline-block;background:var(--berry);color:#fff;border:0;border-radius:7px;padding:12px 18px;font-weight:700;margin-top:8px}
+.score{border:1px solid #ead7da;background:#fff9fa;border-radius:12px;padding:14px}.score strong{font-size:26px}.bar{height:8px;background:#eee;border-radius:20px;overflow:hidden}.bar i{display:block;height:100%;background:var(--berry);border-radius:20px}.tabs{display:flex;border-bottom:1px solid var(--line);margin:-14px -14px 14px}.tabs button{flex:1;border:0;background:#fff;padding:10px;border-bottom:2px solid transparent}.tabs button.active{border-bottom-color:var(--berry);color:var(--berry)}
+.photo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.photo{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}.photo img{width:100%;height:150px;object-fit:cover}.photo div{padding:10px}.analytics{display:grid;grid-template-columns:2fr 1fr;gap:14px}.chart{height:260px;position:relative;background:linear-gradient(to top,#fff,#fff);overflow:hidden}.chart svg{width:100%;height:100%}.toast{position:fixed;right:22px;bottom:22px;background:#191b1d;color:#fff;padding:12px 16px;border-radius:10px;display:none;z-index:20}
+@media(max-width:1050px){.editor{grid-template-columns:180px 1fr}.editor .right{grid-column:1/-1}.grid4{grid-template-columns:repeat(2,1fr)}.photo-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:720px){.sidebar{width:64px}.brand{padding:8px}.brand b,.brand span,.nav button span:not(.ico),.profile{display:none}.content{padding:16px}.grid4{grid-template-columns:1fr}.editor{grid-template-columns:1fr}.canvas{padding:10px}.analytics{grid-template-columns:1fr}.photo-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><b>🍓 LA FRAISERIE</b><span>Studio</span></div>
+  <nav class="nav">
+    <button class="active" data-view="dashboard"><span class="ico">⌂</span><span>Tableau de bord</span></button>
+    <button data-view="newsletters"><span class="ico">✉</span><span>Newsletters</span></button>
+    <button data-view="editor"><span class="ico">✎</span><span>Rédiger</span></button>
+    <button data-view="photos"><span class="ico">▧</span><span>Mes photos</span></button>
+    <button data-view="calendar"><span class="ico">▦</span><span>Calendrier éditorial</span></button>
+    <button data-view="analytics"><span class="ico">▥</span><span>Analyses</span></button>
+  </nav>
+  <div class="profile">La Fraiserie Studio<br><b>Prototype V1</b></div>
+</aside>
+<main class="main">
+<header class="topbar"><h1 id="pageTitle">Bonjour Charlotte !</h1><div class="actions"><button id="installBtn" class="btn" style="display:none" onclick="installPWA()">Installer</button><button class="btn" onclick="toast('Aperçu généré')">Aperçu</button><button class="btn primary" onclick="show('editor')">+ Créer une newsletter</button></div></header>
+<div class="content">
+
+<section id="dashboard" class="view active">
+  <div class="grid4">
+    <div class="card metric"><div class="label">Newsletters envoyées</div><div class="value">24</div><div class="up">+3 ce mois</div></div>
+    <div class="card metric"><div class="label">Ouverture moyenne</div><div class="value">42,7 %</div><div class="up">+8,3 % vs mois dernier</div></div>
+    <div class="card metric"><div class="label">Clic moyen</div><div class="value">6,1 %</div><div class="up">+1,2 %</div></div>
+    <div class="card metric"><div class="label">Contacts actifs</div><div class="value">2 854</div><div class="up">+142 ce mois</div></div>
+  </div>
+  <div class="section-title"><h2>Calendrier éditorial — Mois en cours</h2><button class="btn" onclick="show('calendar')">Voir le calendrier</button></div>
+  <div class="card">
+  <table class="table"><thead><tr><th>Semaine</th><th>Thème</th><th>Objet</th><th>Statut</th><th>Prévision</th></tr></thead><tbody>
+  <tr><td>S1</td><td><b>Produit du moment</b><br><small>Berry Pro</small></td><td>Et si votre bureau était vraiment fait pour vous ?</td><td><span class="badge green">Prête</span></td><td>41 % / 6,4 %</td></tr>
+  <tr><td>S2</td><td><b>Dans les coulisses</b><br><small>Atelier</small></td><td>De l'atelier à votre bureau : comment naît une création</td><td><span class="badge orange">En rédaction</span></td><td>38 % / 5,7 %</td></tr>
+  <tr><td>S3</td><td><b>Inspiration & setup</b><br><small>Gaming / Streaming</small></td><td>Votre setup mérite mieux qu'un bureau standard 🎮</td><td><span class="badge blue">Idée</span></td><td>40 % / 6,0 %</td></tr>
+  <tr><td>S4</td><td><b>La Fraiserie & ses valeurs</b></td><td>Pourquoi avons-nous créé La Fraiserie ?</td><td><span class="badge">Programmée</span></td><td>39 % / 5,5 %</td></tr>
+  </tbody></table></div>
+</section>
+
+<section id="newsletters" class="view">
+  <div class="section-title"><h2>Mes newsletters</h2><button class="btn primary" onclick="show('editor')">+ Nouvelle newsletter</button></div>
+  <div class="card"><table class="table"><thead><tr><th>Campagne</th><th>Objet</th><th>Statut</th><th>Ouverture</th><th>Clic</th></tr></thead><tbody>
+  <tr><td>Berry Pro</td><td>Et si votre bureau était vraiment fait pour vous ?</td><td><span class="badge green">Prête</span></td><td>41 %</td><td>6,4 %</td></tr>
+  <tr><td>Atelier</td><td>Comment naît une création La Fraiserie</td><td><span class="badge orange">Brouillon</span></td><td>38 %</td><td>5,7 %</td></tr>
+  <tr><td>Gaming</td><td>Votre setup mérite mieux qu'un bureau standard</td><td><span class="badge blue">Idée</span></td><td>40 %</td><td>6,0 %</td></tr>
+  </tbody></table></div>
+</section>
+
+<section id="editor" class="view">
+  <div class="section-title"><h2>Éditeur de newsletter</h2><div class="actions"><button class="btn" onclick="toast('Test envoyé')">Envoyer un test</button><button class="btn primary" onclick="toast('Newsletter programmée')">Programmer</button></div></div>
+  <div class="editor">
+    <div class="panel"><h3>Ajouter un bloc</h3><div class="blocks">
+      <button class="blockbtn">T — Titre</button><button class="blockbtn">≡ — Texte</button><button class="blockbtn">▧ — Image</button><button class="blockbtn">◫ — Galerie</button><button class="blockbtn">▣ — Produit</button><button class="blockbtn">↗ — Bouton CTA</button><button class="blockbtn">❝ — Citation</button><button class="blockbtn">— — Séparateur</button><button class="blockbtn">✎ — Signature</button>
+    </div></div>
+    <div class="canvas"><div class="email">
+      <div class="email-head"><b>LA FRAISERIE</b><br><small>Bureaux sur mesure · Fabrication artisanale · Made in France 🇫🇷</small></div>
+      <div class="email-hero">Votre bureau mérite d'être pensé pour vous.</div>
+      <div class="email-body"><h2>Et si votre bureau était vraiment fait pour vous ? 🍓</h2>
+      <p>Vous passez plusieurs heures par jour derrière votre bureau ? Votre espace de travail peut enfin être pensé autour de vos usages, de votre confort et de votre personnalité.</p>
+      <p>Découvrez nos créations et imaginez un espace qui vous ressemble.</p><button class="cta">DÉCOUVRIR BERRY PRO</button></div>
+    </div></div>
+    <div class="panel right"><div class="tabs"><button class="active">Contenu</button><button>CTA</button><button>Image</button></div>
+      <h3>Objet</h3><input id="subject" value="Et si votre bureau était vraiment fait pour vous ?" style="width:100%;padding:10px;border:1px solid var(--line);border-radius:8px" oninput="predict()">
+      <div class="score" style="margin-top:12px"><div>🔮 Performance estimée</div><strong id="open">41 %</strong> ouverture<br><div class="bar"><i id="openbar" style="width:82%"></i></div><br><strong id="click">6,4 %</strong> clic<br><div class="bar"><i id="clickbar" style="width:64%"></i></div><p id="reason" style="color:var(--muted);font-size:12px;margin-bottom:0">La question crée de la curiosité et le bénéfice est clairement identifiable.</p></div>
+      <h3 style="margin-top:18px">Assistant IA</h3><div class="blocks"><button class="blockbtn" onclick="rewrite()">✦ Réécrire plus chaleureusement</button><button class="blockbtn" onclick="rewrite()">✦ Ton plus premium</button><button class="blockbtn" onclick="suggestCTA()">✦ Optimiser le CTA</button><button class="blockbtn" onclick="toast('3 idées d’objets générées')">✦ Générer 3 objets</button></div>
+    </div>
+  </div>
+</section>
+
+<section id="photos" class="view">
+  <div class="section-title"><h2>Mes photos</h2><button class="btn primary" onclick="toast('Sélecteur de fichiers simulé')">+ Importer des photos</button></div>
+  <div class="photo-grid">
+    <div class="photo"><div style="height:150px;background:linear-gradient(135deg,#b8aa97,#4d433a)"></div><div><b>setup-berry-pro.jpg</b><br><button class="btn" onclick="toast('Amélioration IA appliquée')">✨ Améliorer avec IA</button></div></div>
+    <div class="photo"><div style="height:150px;background:linear-gradient(135deg,#6f6b63,#cdbca4)"></div><div><b>atelier-01.jpg</b><br><button class="btn" onclick="toast('Photo recadrée')">✂ Recadrer</button></div></div>
+    <div class="photo"><div style="height:150px;background:linear-gradient(135deg,#343536,#9b765a)"></div><div><b>gaming-setup.jpg</b><br><button class="btn" onclick="toast('Photo améliorée')">✨ Améliorer avec IA</button></div></div>
+    <div class="photo"><div style="height:150px;background:linear-gradient(135deg,#b6a98d,#332e2b)"></div><div><b>detail-bois.jpg</b><br><button class="btn" onclick="toast('Arrière-plan supprimé')">◌ Détourer</button></div></div>
+  </div>
+</section>
+
+<section id="calendar" class="view">
+  <div class="section-title"><h2>Calendrier éditorial</h2><button class="btn primary" onclick="toast('Votre mois a été généré par IA')">✨ Générer mon mois avec l'IA</button></div>
+  <div class="card calendar">
+    <div class="day"><small>Lun</small></div><div class="day"><small>Mar</small></div><div class="day"><small>Mer</small></div><div class="day"><small>Jeu</small></div><div class="day"><small>Ven</small></div><div class="day"><small>Sam</small></div><div class="day"><small>Dim</small></div>
+    <div class="day"><small>1</small></div><div class="day"><small>2</small><div class="event"><b>S1 · Produit</b><br>Berry Pro</div></div><div class="day"><small>3</small></div><div class="day"><small>4</small></div><div class="day"><small>5</small></div><div class="day"><small>6</small></div><div class="day"><small>7</small></div>
+    <div class="day"><small>8</small></div><div class="day"><small>9</small></div><div class="day"><small>10</small></div><div class="day"><small>11</small><div class="event"><b>S2 · Atelier</b><br>Coulisses</div></div><div class="day"><small>12</small></div><div class="day"><small>13</small></div><div class="day"><small>14</small></div>
+    <div class="day"><small>15</small></div><div class="day"><small>16</small></div><div class="day"><small>17</small></div><div class="day"><small>18</small></div><div class="day"><small>19</small><div class="event"><b>S3 · Setup</b><br>Gaming</div></div><div class="day"><small>20</small></div><div class="day"><small>21</small></div>
+    <div class="day"><small>22</small></div><div class="day"><small>23</small></div><div class="day"><small>24</small></div><div class="day"><small>25</small></div><div class="day"><small>26</small></div><div class="day"><small>27</small><div class="event"><b>S4 · Histoire</b><br>Nos valeurs</div></div><div class="day"><small>28</small></div>
+  </div>
+</section>
+
+<section id="analytics" class="view">
+  <div class="section-title"><h2>Analyses des performances</h2><button class="btn" onclick="toast('Rapport exporté')">Exporter</button></div>
+  <div class="grid4">
+    <div class="card metric"><div class="label">Ouverture moyenne</div><div class="value">42,7 %</div><div class="up">+8,3 %</div></div>
+    <div class="card metric"><div class="label">Clic moyen</div><div class="value">6,1 %</div><div class="up">+1,2 %</div></div>
+    <div class="card metric"><div class="label">Désabonnements</div><div class="value">0,3 %</div><div class="up">-0,1 %</div></div>
+    <div class="card metric"><div class="label">Meilleur CTA</div><div class="value" style="font-size:18px">Découvrir l'atelier</div><div class="up">7,3 % clic</div></div>
+  </div>
+  <div class="analytics" style="margin-top:14px"><div class="card"><h3>Évolution ouverture / clic</h3><div class="chart"><svg viewBox="0 0 700 250" preserveAspectRatio="none"><polyline fill="none" stroke="#2f8f5b" stroke-width="4" points="20,150 120,165 220,120 320,132 420,92 520,125 680,88"/><polyline fill="none" stroke="#c92f45" stroke-width="4" points="20,205 120,213 220,175 320,188 420,160 520,182 680,148"/></svg></div></div>
+  <div class="card"><h3>Ce que l'IA apprend</h3><p>Les contenus atelier performent mieux que la moyenne.</p><p>Les objets sous forme de question génèrent davantage d'ouvertures.</p><p>Les CTA orientés bénéfice obtiennent davantage de clics.</p><button class="btn primary" onclick="toast('Recommandations mises à jour')">Actualiser les recommandations</button></div></div>
+</section>
+</div></main></div>
+<div class="toast" id="toast"></div>
+<script>
+const titles={dashboard:'Bonjour Charlotte !',newsletters:'Mes newsletters',editor:'Éditeur de newsletter',photos:'Mes photos',calendar:'Calendrier éditorial',analytics:'Analyses'};
+function show(id){
+ document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===id));
+ document.getElementById('pageTitle').textContent=titles[id];
+ window.scrollTo(0,0);
+}
+document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>show(b.dataset.view)));
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';clearTimeout(window.tt);window.tt=setTimeout(()=>t.style.display='none',2200)}
+function predict(){
+ const s=document.getElementById('subject').value.toLowerCase();
+ let o=37,c=5.4;
+ if(s.includes('?')){o+=3;c+=.4}
+ if(s.length>=30&&s.length<=65){o+=2;c+=.3}
+ if(/vous|votre|pour vous/.test(s)){o+=1;c+=.2}
+ if(/bureau|setup|atelier|frais/i.test(s)){o+=1;c+=.2}
+ o=Math.min(o,48);c=Math.min(c,7.8);
+ document.getElementById('open').textContent=o.toFixed(0)+' %';
+ document.getElementById('click').textContent=c.toFixed(1)+' %';
+ document.getElementById('openbar').style.width=(o*2)+'%';
+ document.getElementById('clickbar').style.width=(c*10)+'%';
+ document.getElementById('reason').textContent=o>=41?'Très bon objet : curiosité + bénéfice + vocabulaire cohérent avec votre marque.':'Objet perfectible : ajoutez un bénéfice clair ou une accroche plus intrigante.';
+}
+function rewrite(){toast('Suggestion IA appliquée au texte')}
+function suggestCTA(){toast('3 CTA optimisés proposés')}
+  let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  const btn = document.getElementById('installBtn');
+  if (btn) btn.style.display = 'inline-block';
+});
+async function installPWA(){
+  if (!deferredPrompt) {
+    toast('Utilisez le menu du navigateur pour installer l’application');
+    return;
+  }
+  deferredPrompt.prompt();
+  await deferredPrompt.userChoice;
+  deferredPrompt = null;
+  const btn = document.getElementById('installBtn');
+  if (btn) btn.style.display = 'none';
+}
+window.addEventListener('appinstalled', () => {
+  const btn = document.getElementById('installBtn');
+  if (btn) btn.style.display = 'none';
+  toast('La Fraiserie Studio est installée');
+});
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('service-worker.js'));
+}
+</script>
+</body></html>

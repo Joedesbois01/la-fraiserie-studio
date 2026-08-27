@@ -1,19 +1,12 @@
-# La Fraiserie Studio — PWA
+LA FRAISERIE STUDIO — PWA
 
-## Contenu
-- `index.html` : application
-- `manifest.json` : configuration PWA
-- `service-worker.js` : cache et fonctionnement hors connexion
-- `icons/` : icônes de l’application
+Fichiers principaux :
+- index.html
+- manifest.json
+- service-worker.js
+- icons/icon-192.png
+- icons/icon-512.png
+- photos/ (4 photos Berry)
 
-## Important
-Une PWA doit être servie depuis HTTPS (ou localhost pour les tests). Ouvrir `index.html` directement en `file://` ne suffit généralement pas pour installer la PWA.
-
-## Test local
-Depuis ce dossier, lancer un serveur HTTP local, par exemple :
-`python -m http.server 8000`
-
-Puis ouvrir :
-`http://localhost:8000/`
-
-Pour une installation sur téléphone, publier ensuite le dossier sur un hébergement HTTPS.
+Publication : déposer tous ces fichiers à la racine du dépôt GitHub Pages.
+Le site doit être servi en HTTPS pour l'installation PWA.

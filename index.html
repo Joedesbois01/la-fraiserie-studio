@@ -40,6 +40,28 @@ button,input,textarea,select{font:inherit} button{cursor:pointer}
 .photo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.photo{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}.photo img{width:100%;height:150px;object-fit:cover}.photo div{padding:10px}.analytics{display:grid;grid-template-columns:2fr 1fr;gap:14px}.chart{height:260px;position:relative;background:linear-gradient(to top,#fff,#fff);overflow:hidden}.chart svg{width:100%;height:100%}.toast{position:fixed;right:22px;bottom:22px;background:#191b1d;color:#fff;padding:12px 16px;border-radius:10px;display:none;z-index:20}
 @media(max-width:1050px){.editor{grid-template-columns:180px 1fr}.editor .right{grid-column:1/-1}.grid4{grid-template-columns:repeat(2,1fr)}.photo-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:720px){.sidebar{width:64px}.brand{padding:8px}.brand b,.brand span,.nav button span:not(.ico),.profile{display:none}.content{padding:16px}.grid4{grid-template-columns:1fr}.editor{grid-template-columns:1fr}.canvas{padding:10px}.analytics{grid-template-columns:1fr}.photo-grid{grid-template-columns:1fr 1fr}}
+
+.product-sheet{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);gap:18px}
+.product-gallery{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px}
+.product-main-image{width:100%;height:440px;object-fit:cover;border-radius:12px;background:#eee}
+.product-thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:10px}
+.product-thumb{border:2px solid transparent;border-radius:9px;overflow:hidden;padding:0;background:#fff}
+.product-thumb.active{border-color:var(--berry)}
+.product-thumb img{width:100%;height:75px;object-fit:cover;display:block}
+.product-info{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px}
+.product-kicker{color:var(--berry);font-weight:750;font-size:12px;text-transform:uppercase;letter-spacing:.08em}
+.product-info h2{font-size:30px;margin:5px 0 8px}
+.made-france{display:inline-flex;align-items:center;gap:7px;background:#f6f3ef;border-radius:999px;padding:7px 10px;font-size:12px;margin:8px 0 18px}
+.product-description{font-size:15px;color:#5c5d60;line-height:1.6}
+.product-points{display:grid;gap:10px;margin:18px 0}
+.product-point{border:1px solid var(--line);border-radius:10px;padding:12px}
+.product-point b{display:block;margin-bottom:3px}
+.product-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.product-note{font-size:12px;color:var(--muted);margin-top:14px}
+.model-switch{display:flex;gap:8px;margin-bottom:14px}
+.model-switch button{border:1px solid var(--line);background:#fff;border-radius:9px;padding:9px 12px}
+.model-switch button.active{border-color:var(--berry);color:var(--berry);font-weight:700}
+@media(max-width:850px){.product-sheet{grid-template-columns:1fr}.product-main-image{height:320px}}
 </style>
 </head>
 <body>
@@ -51,6 +73,7 @@ button,input,textarea,select{font:inherit} button{cursor:pointer}
     <button data-view="newsletters"><span class="ico">✉</span><span>Newsletters</span></button>
     <button data-view="editor"><span class="ico">✎</span><span>Rédiger</span></button>
     <button data-view="photos"><span class="ico">▧</span><span>Mes photos</span></button>
+    <button data-view="berry"><span class="ico">🪑</span><span>Modèles Berry</span></button>
     <button data-view="calendar"><span class="ico">▦</span><span>Calendrier éditorial</span></button>
     <button data-view="analytics"><span class="ico">▥</span><span>Analyses</span></button>
   </nav>
@@ -107,6 +130,42 @@ button,input,textarea,select{font:inherit} button{cursor:pointer}
   </div>
 </section>
 
+
+<section id="berry" class="view">
+  <div class="section-title">
+    <div><h2>Modèle Berry</h2><small style="color:var(--muted)">Fiche modèle · La Fraiserie Studio</small></div>
+    <div class="actions"><button class="btn" onclick="toast('Fiche prête à être partagée')">Partager</button><button class="btn primary" onclick="toast('Demande de configuration créée')">Demander une configuration</button></div>
+  </div>
+  <div class="model-switch"><button class="active">Berry</button></div>
+  <div class="product-sheet">
+    <div class="product-gallery">
+      <img id="berryMainImage" class="product-main-image" src="photos/berry-principal.jpg" alt="Berry — vue principale">
+      <div class="product-thumbs">
+        <button class="product-thumb active" onclick="berryPhoto('photos/berry-principal.jpg',this)"><img src="photos/berry-principal.jpg" alt="Berry — vue principale"></button>
+        <button class="product-thumb" onclick="berryPhoto('photos/berry-led.jpg',this)"><img src="photos/berry-led.jpg" alt="Berry — éclairage LED"></button>
+        <button class="product-thumb" onclick="berryPhoto('photos/berry-detail.jpg',this)"><img src="photos/berry-detail.jpg" alt="Berry — détail"></button>
+        <button class="product-thumb" onclick="berryPhoto('photos/berry-angle.jpg',this)"><img src="photos/berry-angle.jpg" alt="Berry — vue de côté"></button>
+      </div>
+    </div>
+    <div class="product-info">
+      <div class="product-kicker">Collection Berry</div>
+      <h2>Berry</h2>
+      <div class="made-france">🇫🇷 <b>Made in France</b></div>
+      <p class="product-description">Découvrez le modèle Berry à travers une fiche claire et visuelle. Cette présentation rassemble les vues du modèle et prépare l’espace pour vos futures informations de configuration.</p>
+      <div class="product-points">
+        <div class="product-point"><b>📸 4 vues du modèle</b><span>Vue principale, éclairage LED, détail et vue de côté.</span></div>
+        <div class="product-point"><b>🇫🇷 Fabrication</b><span>Made in France.</span></div>
+        <div class="product-point"><b>📝 Configuration</b><span>Les caractéristiques, dimensions, finitions et prix peuvent être ajoutés ici.</span></div>
+      </div>
+      <div class="product-actions">
+        <button class="btn primary" onclick="toast('Demande de configuration créée')">Demander une configuration</button>
+        <button class="btn" onclick="show('photos')">Voir toutes les photos</button>
+      </div>
+      <div class="product-note">Les informations techniques et tarifaires ne sont pas renseignées dans le prototype actuel.</div>
+    </div>
+  </div>
+</section>
+
 <section id="photos" class="view">
   <div class="section-title"><h2>Mes photos</h2><button class="btn primary" onclick="toast('Sélecteur de fichiers simulé')">+ Importer des photos</button></div>
   <div class="photo-grid">
@@ -142,7 +201,7 @@ button,input,textarea,select{font:inherit} button{cursor:pointer}
 </div></main></div>
 <div class="toast" id="toast"></div>
 <script>
-const titles={dashboard:'Bonjour Charlotte !',newsletters:'Mes newsletters',editor:'Éditeur de newsletter',photos:'Mes photos',calendar:'Calendrier éditorial',analytics:'Analyses'};
+const titles={dashboard:'Bonjour Charlotte !',newsletters:'Mes newsletters',editor:'Éditeur de newsletter',photos:'Mes photos',berry:'Modèle Berry',calendar:'Calendrier éditorial',analytics:'Analyses'};
 function show(id){
  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
  document.getElementById(id).classList.add('active');
@@ -165,6 +224,11 @@ function predict(){
  document.getElementById('openbar').style.width=(o*2)+'%';
  document.getElementById('clickbar').style.width=(c*10)+'%';
  document.getElementById('reason').textContent=o>=41?'Très bon objet : curiosité + bénéfice + vocabulaire cohérent avec votre marque.':'Objet perfectible : ajoutez un bénéfice clair ou une accroche plus intrigante.';
+}
+function berryPhoto(src, btn){
+  document.getElementById('berryMainImage').src = src;
+  document.querySelectorAll('.product-thumb').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
 }
 function rewrite(){toast('Suggestion IA appliquée au texte')}
 function suggestCTA(){toast('3 CTA optimisés proposés')}
